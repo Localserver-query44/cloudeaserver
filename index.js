@@ -13,7 +13,7 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000;
 const domain = 'https://free.sanzdev.web.id';  
 const apikey = 'ptlc_j31v8GgFLL3AW1NeEA22VbadZjxs5M5lzidiEJ4jo9v';  
 const page = 1;  
-
+const passwordAkses = 'botkey'; 
 
 const supportedRegions = ['IND', 'BR', 'SG', 'RU', 'ID', 'TW', 'US', 'VN', 'TH', 'ME', 'PK', 'CIS', 'BD'];
 
@@ -67,6 +67,37 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get('/delsrv', async (req, res) => {
+    const { pass, id } = req.query;
+
+    if (!pass || !id) {
+        return res.status(400).json({ error: 'Missing "pass" or "id" parameter.' });
+    }
+
+    if (pass !== passwordAkses) {
+        return res.status(403).json({ error: 'Invalid access password.' });
+    }
+
+    try {
+        const response = await fetch(`${domain}/api/application/servers/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apikey}`
+            }
+        });
+
+        if (response.ok) {
+            return res.json({ message: `Server with ID ${id} has been successfully deleted.` });
+        } else {
+            const errorData = await response.json();
+            return res.status(500).json({ error: 'Failed to delete server', details: errorData });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to connect to the API', details: error.message });
+    }
+});
 
 const fetchUserDetails = async (userId) => {
     try {
@@ -109,8 +140,8 @@ const fetchAllServers = async () => {
                     user_id: s.user,
                     username: userDetails.username,
                     email: userDetails.email,
-                    ram: s.limits.memory,        // RAM dalam MB
-                    disk: s.limits.disk           // Disk dalam MB
+                    ram: s.limits.memory,    
+                    disk: s.limits.disk           
                 });
             }
 
