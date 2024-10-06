@@ -1,6 +1,4 @@
 const express = require('express');
-const fetch = require('node-fetch');
-const bodyParser = require('body-parser');
 const axios = require('axios');
 const cors = require('cors'); 
 const fs = require("fs");
@@ -20,8 +18,6 @@ app.use(cors({
     methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'] 
 }));
-
-
 
 
 const fetchFromApi = async (url, res, cacheKey) => {
