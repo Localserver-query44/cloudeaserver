@@ -10,6 +10,10 @@ const port = 3000;
 const BASE_URL = 'https://free-ff-api-src-5plp.onrender.com/api/v1';
 const ICON_BASE_URL = 'https://www.library.freefireinfo.site/icons/';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; 
+const domain = 'https://free.sanzdev.web.id';  
+const apikey = 'ptlc_j31v8GgFLL3AW1NeEA22VbadZjxs5M5lzidiEJ4jo9v';  
+const page = 1;  
+
 
 const supportedRegions = ['IND', 'BR', 'SG', 'RU', 'ID', 'TW', 'US', 'VN', 'TH', 'ME', 'PK', 'CIS', 'BD'];
 
@@ -61,6 +65,36 @@ app.use((req, res, next) => {
 app.use(express.static("public"));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+
+const fetchServers = async (page) => {
+    try {
+        let response = await axios.get(`${domain}/api/application/servers?page=${page}`, {
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${apikey}`
+            }
+        });
+        let servers = response.data.data;
+        let paw = `*BERIKUT LIST SERVER PANEL :*\n\n`;
+        servers.forEach(server => {
+            let s = server.attributes;
+            paw += `- ID : ${s.id}\n- Name : ${s.name}\n\n`;
+        });
+
+        return paw;
+
+    } catch (error) {
+        console.error('Error fetching servers:', error);
+        return 'Failed to fetch servers';
+    }
+};
+
+
+app.get('/listpanel', async (req, res) => {
+    const listServerPanel = await fetchServers(page);
+    res.send(listServerPanel);
 });
 
 app.get('/api/v1/icon', async (req, res) => {
