@@ -67,9 +67,122 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.use(express.json());
+app.get('/panel/addsrv', async (req, res) => {
+    const { id } = req.query;
+    if (!id) {
+        return res.status(400).json({ error: 'Missing "id" parameter.' });
+    }
+    const userId = id;
+    const serverName = userId; /
+    const description = "Server for user " + userId; 
+    const egg = 15; 
+    const memo_disk = [2048, 2048]; 
+    const cpu = "100"; 
+    const loc = "1"; 
+    try {
+        let f1 = await fetch(`${domain}/api/application/nests/5/eggs/${egg}`, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apikey}`
+            }
+        });
+        let data = await f1.json();
+        let startup_cmd = data.attributes.startup;
+        let f = await fetch(`${domain}/api/application/servers`, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apikey}`
+            },
+            body: JSON.stringify({
+                "name": serverName,
+                "description": description,
+                "user": userId,
+                "egg": parseInt(egg),
+                "docker_image": "ghcr.io/parkervcp/yolks:nodejs_18",
+                "startup": startup_cmd,
+                "environment": {
+                    "INST": "npm",
+                    "USER_UPLOAD": "0",
+                    "AUTO_UPDATE": "0",
+                    "CMD_RUN": "npm start"
+                },
+                "limits": {
+                    "memory": memo_disk[0],
+                    "swap": 0,
+                    "disk": memo_disk[0],
+                    "io": 500,
+                    "cpu": cpu
+                },
+                "feature_limits": {
+                    "databases": 5,
+                    "backups": 5,
+                    "allocations": 5
+                },
+                "deploy": {
+                    "locations": [parseInt(loc)],
+                    "dedicated_ip": false,
+                    "port_range": [],
+                }
+            })
+        });
+
+        let resData = await f.json();
+
+        if (resData.errors) {
+            return res.status(400).json({ error: resData.errors[0] });
+        }
+
+        res.json({ message: 'Server has been successfully created.', server: resData });
+
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to connect to the API', details: error.message });
+    }
+});
+
+app.get('/panel/delusr', async (req, res) => {
+    const { id, pass } = req.query;
+
+    if (pass !== passwordAkses) {
+        return res.status(403).json({ error: 'Access denied. Invalid password.' });
+    }
+
+    if (!id) {
+        return res.status(400).json({ error: 'Missing "id" parameter.' });
+    }
+
+    try {
+        let f = await fetch(`${domain}/api/application/users/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apikey}`
+            }
+        });
+
+        let resData = f.ok ? {
+            message: `User with ID ${id} has been successfully deleted.`,
+            errors: null
+        } : await f.json();
+
+        if (!f.ok) {
+            return res.status(500).json({ error: 'Failed to delete user', details: resData });
+        }
+
+        res.json(resData); 
+
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to connect to the API', details: error.message });
+    }
+});
 
 
-app.get('/addusr', async (req, res) => {
+app.get('/panel/addusr', async (req, res) => {
     const { usernm, passwd } = req.query;
 
     if (!usernm || !passwd) {
@@ -114,7 +227,7 @@ app.get('/addusr', async (req, res) => {
     }
 });
 
-app.get('/delsrv', async (req, res) => {
+app.get('/panel/delsrv', async (req, res) => {
     const { pass, id } = req.query;
 
     if (!pass || !id) {
@@ -203,7 +316,7 @@ const fetchAllServers = async () => {
     }
 };
 
-app.get('/listpanel', async (req, res) => {
+app.get('/panel/listpanel', async (req, res) => {
     const allServers = await fetchAllServers();
     if (allServers.error) {
         return res.status(500).json(allServers);
