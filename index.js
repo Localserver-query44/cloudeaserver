@@ -76,11 +76,9 @@ const fetchUserDetails = async (userId) => {
                 "Authorization": `Bearer ${apikey}`
             }
         });
-        return response.data.attributes; 
-
+        return response.data.attributes;
     } catch (error) {
-        console.error(`Error fetching user details for ID ${userId}:`, error);
-        return { username: 'Unknown', email: 'Unknown' }; 
+        return { username: 'Unknown', email: 'Unknown' };
     }
 };
 
@@ -99,6 +97,7 @@ const fetchAllServers = async () => {
             });
 
             let servers = response.data.data;
+            
             for (const server of servers) {
                 let s = server.attributes;
                 let userDetails = await fetchUserDetails(s.user);
@@ -114,13 +113,12 @@ const fetchAllServers = async () => {
             }
 
             hasNextPage = response.data.meta.pagination.current_page < response.data.meta.pagination.total_pages;
-            page++;  
+            page++;
         }
 
         return allServers;
 
     } catch (error) {
-        console.error('Error fetching servers:', error);
         return { error: 'Failed to fetch servers' };
     }
 };
@@ -130,7 +128,8 @@ app.get('/listpanel', async (req, res) => {
     if (allServers.error) {
         return res.status(500).json(allServers);
     }
-    res.json(allServers);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(allServers, null, 2));
 });
 
 app.get('/api/v1/icon', async (req, res) => {
