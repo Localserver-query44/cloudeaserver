@@ -1,1 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="twitter:card" content="https://i.imgur.com/roxITi3.jpeg">
+<meta property="twitter:title" content="Panduan Lengkap API Kami">
+<meta property="twitter:description" content="Temukan dokumentasi API lengkap untuk integrasi mudah dengan proyek Anda.">
+<meta property="twitter:image" content="https://i.imgur.com/roxITi3.jpeg">
+<meta property="og:title" content="Endpoint Rest api is free for all users, connect our free api to your project now. ">
+<meta property="og:description" content="Dokumentasi terperinci API kami membantu Anda mengintegrasikan proyek dengan mudah dan efisien.">
+<meta property="og:image" content="https://i.imgur.com/roxITi3.jpeg">
+<meta property="og:url" content="https://aemcv.us.kg/documentation">
+<meta property="og:site_name" content="Sanzdev Ui">
+<meta property="description" content="Temukan panduan lengkap dan dokumentasi API untuk mempermudah integrasi dengan proyek Anda.">
+    <title>API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column; 
+            position: relative;
+            overflow: hidden;
+        }
+        main {
+            flex: 1; 
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; 
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div id="particles-js"></div> 
+    <header style="display: fixed;" class="bg-gray-800 p-3">
+        <h1 class="text-lg font-bold text-center">REST API Sanzdev</h1>
+        <p class="text-center mt-1 text-gray-400 text-xs">Explore the list of available API endpoints</p>
+    </header>
 
+    <main class="w-full max-w-2xl mx-auto p-2">
+     <div class="space-y-2 max-h-[90vh] overflow-y-auto">
+            
+<!-- API 1 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">account</h3>
+            <p class="text-gray-400 text-xs">Retrieves account details for the current user</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/account
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/account', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- API 2 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">craftlandProfile</h3>
+            <p class="text-gray-400 text-xs">Retrieves Craftland profile details for the user</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/craftlandProfile
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/craftlandProfile', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- API 3 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">craftlandInfo</h3>
+            <p class="text-gray-400 text-xs">Retrieves Craftland information related to user activities</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/craftlandInfo
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/craftlandInfo', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- API 4 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">playerstats</h3>
+            <p class="text-gray-400 text-xs">Retrieves player statistics for the current user</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/playerstats
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/playerstats', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- API 5 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">wishlistitems</h3>
+            <p class="text-gray-400 text-xs">Retrieves the wishlist items of the user</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/wishlistitems
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/wishlistitems', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- API 6 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">guildInfo</h3>
+            <p class="text-gray-400 text-xs">Retrieves guild information for the user</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/guildInfo
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/guildInfo', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- API 7 -->
+<div class="bg-gray-800 rounded-lg overflow-hidden w-full">
+    <button class="w-full flex justify-between items-center bg-gray-700 p-2 text-left" onclick="toggleCollapse(this)">
+        <div>
+            <h3 class="text-xs font-semibold">Itemid icon</h3>
+            <p class="text-gray-400 text-xs">To get the icon from the item id</p>
+        </div>
+        <i class="fas fa-chevron-down text-blue-400"></i>
+    </button>
+    <div class="collapsible-content bg-gray-800 p-2 hidden">
+        <div>
+            <code class="block bg-gray-700 p-2 rounded text-green-400 text-xs">
+                GET /api/v1/icon
+            </code>
+        </div>
+        <button 
+            class="bg-blue-500 text-white w-full py-2 rounded mt-2 hover:bg-blue-400 text-xs" 
+            onclick="window.open('/api/v1/icon?id=102000004', '_blank')">
+            Try it out
+        </button>
+    </div>
+</div>
+
+<!-- END API -->
+        </div>
+    </main>
+    <script>
+function toggleCollapse(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector('i');
+
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+    } else {
+        content.style.maxHeight = null;
+        content.classList.add('hidden');
+        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+    }
+}
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 95,
+                    "density": {
+                        "enable": true,
+                        "value_area": 900
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
