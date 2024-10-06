@@ -108,7 +108,9 @@ const fetchAllServers = async () => {
                     description: s.description,
                     user_id: s.user,
                     username: userDetails.username,
-                    email: userDetails.email
+                    email: userDetails.email,
+                    ram: s.limits.memory,        // RAM dalam MB
+                    disk: s.limits.disk           // Disk dalam MB
                 });
             }
 
