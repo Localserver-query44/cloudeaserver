@@ -68,33 +68,69 @@ app.get("/", (req, res) => {
 });
 
 
-const fetchServers = async (page) => {
+const fetchUserDetails = async (userId) => {
     try {
-        let response = await axios.get(`${domain}/api/application/servers?page=${page}`, {
+        let response = await axios.get(`${domain}/api/application/users/${userId}`, {
             headers: {
                 "Accept": "application/json",
                 "Authorization": `Bearer ${apikey}`
             }
         });
-        let servers = response.data.data;
-        let paw = `*BERIKUT LIST SERVER PANEL :*\n\n`;
-        servers.forEach(server => {
-            let s = server.attributes;
-            paw += `- ID : ${s.id}\n- Name : ${s.name}\n\n`;
-        });
-
-        return paw;
+        return response.data.attributes; 
 
     } catch (error) {
-        console.error('Error fetching servers:', error);
-        return 'Failed to fetch servers';
+        console.error(`Error fetching user details for ID ${userId}:`, error);
+        return { username: 'Unknown', email: 'Unknown' }; 
     }
 };
 
+const fetchAllServers = async () => {
+    let allServers = [];
+    let page = 1;
+    let hasNextPage = true;
+
+    try {
+        while (hasNextPage) {
+            let response = await axios.get(`${domain}/api/application/servers?page=${page}`, {
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${apikey}`
+                }
+            });
+
+            let servers = response.data.data;
+            for (const server of servers) {
+                let s = server.attributes;
+                let userDetails = await fetchUserDetails(s.user);
+                
+                allServers.push({
+                    id: s.id,
+                    name: s.name,
+                    description: s.description,
+                    user_id: s.user,
+                    username: userDetails.username,
+                    email: userDetails.email
+                });
+            }
+
+            hasNextPage = response.data.meta.pagination.current_page < response.data.meta.pagination.total_pages;
+            page++;  
+        }
+
+        return allServers;
+
+    } catch (error) {
+        console.error('Error fetching servers:', error);
+        return { error: 'Failed to fetch servers' };
+    }
+};
 
 app.get('/listpanel', async (req, res) => {
-    const listServerPanel = await fetchServers(page);
-    res.send(listServerPanel);
+    const allServers = await fetchAllServers();
+    if (allServers.error) {
+        return res.status(500).json(allServers);
+    }
+    res.json(allServers);
 });
 
 app.get('/api/v1/icon', async (req, res) => {
