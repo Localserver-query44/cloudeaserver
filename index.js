@@ -73,14 +73,10 @@ app.get('/get', async (req, res) => {
     if (!url) {
         return res.status(400).json({ error: 'Missing "url" parameter.' });
     }
-
     try {
         const response = await axios.get(url);
-        res.json({
-            message: `Data successfully fetched from ${url}`,
-            data: response.data
-        });
-
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(response.data, null, 2)); 
     } catch (error) {
         return res.status(500).json({ 
             error: 'Failed to fetch data from the URL', 
