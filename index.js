@@ -67,7 +67,27 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get('/get', async (req, res) => {
+    const { url } = req.query;
 
+    if (!url) {
+        return res.status(400).json({ error: 'Missing "url" parameter.' });
+    }
+
+    try {
+        const response = await axios.get(url);
+        res.json({
+            message: `Data successfully fetched from ${url}`,
+            data: response.data
+        });
+
+    } catch (error) {
+        return res.status(500).json({ 
+            error: 'Failed to fetch data from the URL', 
+            details: error.message 
+        });
+    }
+});
 
 app.get('/panel/delusr', async (req, res) => {
     const { id, pass } = req.query;
