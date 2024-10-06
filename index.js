@@ -67,6 +67,53 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+
+
+app.get('/addusr', async (req, res) => {
+    const { usernm, passwd } = req.query;
+
+    if (!usernm || !passwd) {
+        return res.status(400).json({ error: 'Missing "usernm" or "passwd" parameter.' });
+    }
+    const last_name = usernm.slice(-3);
+
+    try {
+        const response = await axios.post(`${domain}/api/application/users`, {
+            username: usernm,
+            first_name: usernm, 
+            last_name: last_name, 
+            email: `${usernm}@sanzdev.com`, 
+            password: passwd,
+            root_admin: false, 
+            language: 'en'
+        }, {
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${apikey}`,
+                "Content-Type": "application/json"
+            }
+        });
+        if (response.status === 201) {
+            const userData = response.data.attributes;
+            return res.json({
+                message: `User ${usernm} has been successfully created.`,
+                user: {
+                    id: userData.id,
+                    username: userData.username,
+                    email: userData.email,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    language: userData.language
+                }
+            });
+        } else {
+            return res.status(500).json({ error: 'Failed to create user', details: response.data });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to connect to the API', details: error.message });
+    }
+});
+
 app.get('/delsrv', async (req, res) => {
     const { pass, id } = req.query;
 
