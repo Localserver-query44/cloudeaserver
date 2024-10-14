@@ -74,20 +74,26 @@ app.get('/safelink', async (req, res) => {
     const { url, alias, passcode } = req.query;
 
     if (!url) {
-        return res.status(400).json({
-            creator: 'Sanzdev',
-            status: 'false',
-            error: 'URL is required'
-        });
+        return res.status(400).send(
+            JSON.stringify(
+                {
+                    creator: 'Sanzdev',
+                    status: 'false',
+                    error: 'URL is required'
+                },
+                null,
+                4
+            )
+        );
     }
 
     try {
         const response = await axios.post(
             'https://safelinku.com/api/v1/links',
             {
-                url,      
-                alias,    
-                passcode,  
+                url,
+                alias,
+                passcode,
             },
             {
                 headers: {
@@ -98,31 +104,55 @@ app.get('/safelink', async (req, res) => {
         );
 
         if (response.status === 201) {
-            res.status(201).json({
-                creator: 'Sanzdev',  
-                status: 'true',
-                shortenedUrl: response.data.url
-            });
+            res.status(201).send(
+                JSON.stringify(
+                    {
+                        creator: 'Sanzdev',
+                        status: 'true',
+                        shortenedUrl: response.data.url
+                    },
+                    null,
+                    4
+                )
+            );
         } else {
-            res.status(response.status).json({
-                creator: 'Sanzdev',
-                status: 'false',
-                error: 'Failed to create link',
-            });
+            res.status(response.status).send(
+                JSON.stringify(
+                    {
+                        creator: 'Sanzdev',
+                        status: 'false',
+                        error: 'Failed to create link'
+                    },
+                    null,
+                    4
+                )
+            );
         }
     } catch (error) {
         if (error.response) {
-            res.status(error.response.status).json({
-                creator: 'Sanzdev',
-                status: 'false',
-                error: error.response.data.message || 'An error occurred',
-            });
+            res.status(error.response.status).send(
+                JSON.stringify(
+                    {
+                        creator: 'Sanzdev',
+                        status: 'false',
+                        error: error.response.data.message || 'An error occurred'
+                    },
+                    null,
+                    4
+                )
+            );
         } else {
-            res.status(500).json({
-                creator: 'Sanzdev',
-                status: 'false',
-                error: 'Internal server error'
-            });
+            res.status(500).send(
+                JSON.stringify(
+                    {
+                        creator: 'Sanzdev',
+                        status: 'false',
+                        error: 'Internal server error'
+                    },
+                    null,
+                    4
+                )
+            );
         }
     }
 });
