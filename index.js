@@ -6,7 +6,8 @@ const path = require("path");
 const cache = require('memory-cache'); 
 const app = express();
 const port = 3000;
-
+const SafeToken = '30f4cd4e587c1bedc39690b2fe2b518a9da63b40';
+const Safelinkurl = 'https://safelinku.com/api/v1/links';
 const BASE_URL = 'https://free-ff-api-src-5plp.onrender.com/api/v1';
 const ICON_BASE_URL = 'https://www.library.freefireinfo.site/icons/';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; 
@@ -66,6 +67,70 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+app.get('/api/v1/safelink', async (req, res) => {
+    const { url } = req.query;
+    if (!url || url.trim() === '') {
+        return res.status(400).json({
+            success: false,
+            message: 'URL is required'
+        });
+    }
+
+    try {
+        const response = await axios.post(Safelinkurl, {
+            url
+        }, {
+            headers: {
+                Authorization: `Bearer ${SafeToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.status === 201) {
+            return res.status(201).send(
+                JSON.stringify({
+                    success: true,
+                    shortened_url: response.data.url
+                }, null, 4) 
+            );
+        } else {
+            return res.status(400).send(
+                JSON.stringify({
+                    success: false,
+                    message: 'Failed to create link'
+                }, null, 4)
+            );
+        }
+    } catch (error) {
+        if (error.response) {
+            const { status } = error.response;
+            if (status === 401) {
+                return res.status(401).send(
+                    JSON.stringify({
+                        success: false,
+                        message: 'Unauthorized'
+                    }, null, 4)
+                );
+            } else if (status === 429) {
+                return res.status(429).send(
+                    JSON.stringify({
+                        success: false,
+                        message: 'Rate limit exceeded'
+                    }, null, 4)
+                );
+            }
+        }
+        return res.status(500).send(
+            JSON.stringify({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            }, null, 4)
+        );
+    }
+});
+
 
 app.get('/get', async (req, res) => {
     const { url } = req.query;
